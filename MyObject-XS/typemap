@@ -1,0 +1,6 @@
+TYPEMAP
+MyObject::XS  O_OBJECT
+
+INPUT
+O_OBJECT
+    $var = ($type)object_from_sv(aTHX_ $arg, __PACKAGE__, __STASH__);
