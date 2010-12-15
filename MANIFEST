@@ -38,4 +38,5 @@ MyObject-XS/Makefile.PL
 MyObject-XS/MANIFEST
 MyObject-XS/typemap
 MyObject-XS/XS.xs
+README
 

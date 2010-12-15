@@ -1,0 +1,158 @@
+USAGE:
+
+./benchall.pl path ...
+./benchall.pl /opt/perl/5.{10.1,12.2}/bin/perl
+
+
+BENCHMARKS:
+
+AvInOut             (MyObject::AvInsideOut)
+  Inside-out object using an array to store object data
+AvInOutXS           (MyObject::AvInsideOutXS)
+  Same as AvInOut but accessors are implemented in XSUB
+AvRef               (MyObject::AvRef)
+  Object using an array reference to store object data
+AvRefClosure        (MyObject::AvRefClosure)
+  Same as AvRef but accessors are generated using a closure
+AvRefEval           (MyObject::AvRefEval)
+  Same as AvRef but accessors are generated using eval
+AvRefXS             (MyObject::AvRefXS)
+  Same as AvRef but accessors are implemented in XSUB
+HvFHash             (MyObject::HvFieldHash)
+  Inside-out object using a hash to store object data and Hash::Util::FieldHash
+  to manage GC.
+HvFHashCachedId     (MyObject::HvFieldHashCachedId)
+  Same as HvFHash but the object identifier is stored within the object
+HvInOut             (MyObject::HvInsideOut)
+  Inside-out object using a hash to store object data
+HvInOutCachedId     (MyObject::HvInsideOutCachedId)
+  Same as HvInOut but the object identifier is stored within the object
+HvInOutXS           (MyObject::HvInsideOutXS)
+  Same as HvInOut but accessors are implemented in XSUB
+HvRef               (MyObject::HvRef)
+  Object using a hash reference to store object data
+HvRefClosure        (MyObject::HvRefClosure)
+  Same as HvRef but accessors are generated using a closure
+HvRefEval           (MyObject::HvRefEval)
+  Same as HvRef but accessors are generated using eval
+HvRefXS             (MyObject::HvRefXS)
+  Same as HvRef but accessors are implemented in XSUB
+XS                  (MyObject::XS)
+  Object implemented in XSUB using a c struct.
+
+
+EXAMPLE REPORT:
+
+
+5.012002 Darwin 9.8.0 i386 (optimize=-O3, usethreads=undef, usemultiplicity=undef)
+
+-------| Accessor
+
+AvInOut          9 wallclock secs ( 8.39 usr +  0.02 sys =  8.41 CPU) @ 1189060.64/s (n=10000000)
+AvInOutXS        2 wallclock secs ( 2.65 usr + -0.01 sys =  2.64 CPU) @ 3787878.79/s (n=10000000)
+AvRef            9 wallclock secs ( 9.26 usr +  0.02 sys =  9.28 CPU) @ 1077586.21/s (n=10000000)
+AvRefClosure     9 wallclock secs ( 9.30 usr +  0.02 sys =  9.32 CPU) @ 1072961.37/s (n=10000000)
+AvRefEval       10 wallclock secs ( 9.18 usr +  0.03 sys =  9.21 CPU) @ 1085776.33/s (n=10000000)
+AvRefXS          2 wallclock secs ( 2.54 usr +  0.00 sys =  2.54 CPU) @ 3937007.87/s (n=10000000)
+HvFHash          8 wallclock secs ( 8.79 usr +  0.02 sys =  8.81 CPU) @ 1135073.78/s (n=10000000)
+HvFHashCachedId  8 wallclock secs ( 8.62 usr +  0.02 sys =  8.64 CPU) @ 1157407.41/s (n=10000000)
+HvInOut         11 wallclock secs (10.72 usr +  0.02 sys = 10.74 CPU) @ 931098.70/s (n=10000000)
+HvInOutCachedId 10 wallclock secs ( 8.79 usr +  0.01 sys =  8.80 CPU) @ 1136363.64/s (n=10000000)
+HvInOutXS        7 wallclock secs ( 6.14 usr +  0.01 sys =  6.15 CPU) @ 1626016.26/s (n=10000000)
+HvRef            9 wallclock secs ( 9.28 usr +  0.02 sys =  9.30 CPU) @ 1075268.82/s (n=10000000)
+HvRefClosure    11 wallclock secs ( 9.65 usr + -0.00 sys =  9.65 CPU) @ 1036269.43/s (n=10000000)
+HvRefEval       11 wallclock secs ( 9.46 usr +  0.01 sys =  9.47 CPU) @ 1055966.21/s (n=10000000)
+HvRefXS          2 wallclock secs ( 2.47 usr +  0.01 sys =  2.48 CPU) @ 4032258.06/s (n=10000000)
+XS               2 wallclock secs ( 2.99 usr +  0.00 sys =  2.99 CPU) @ 3344481.61/s (n=10000000)
+
+                     Rate HvInOut HvRefClosure HvRefEval AvRefClosure HvRef AvRef AvRefEval HvFHash HvInOutCachedId HvFHashCachedId AvInOut HvInOutXS   XS AvInOutXS AvRefXS HvRefXS
+HvInOut          931099/s      --         -10%      -12%         -13%  -13%  -14%      -14%    -18%            -18%            -20%    -22%      -43% -72%      -75%    -76%    -77%
+HvRefClosure    1036269/s     11%           --       -2%          -3%   -4%   -4%       -5%     -9%             -9%            -10%    -13%      -36% -69%      -73%    -74%    -74%
+HvRefEval       1055966/s     13%           2%        --          -2%   -2%   -2%       -3%     -7%             -7%             -9%    -11%      -35% -68%      -72%    -73%    -74%
+AvRefClosure    1072961/s     15%           4%        2%           --   -0%   -0%       -1%     -5%             -6%             -7%    -10%      -34% -68%      -72%    -73%    -73%
+HvRef           1075269/s     15%           4%        2%           0%    --   -0%       -1%     -5%             -5%             -7%    -10%      -34% -68%      -72%    -73%    -73%
+AvRef           1077586/s     16%           4%        2%           0%    0%    --       -1%     -5%             -5%             -7%     -9%      -34% -68%      -72%    -73%    -73%
+AvRefEval       1085776/s     17%           5%        3%           1%    1%    1%        --     -4%             -4%             -6%     -9%      -33% -68%      -71%    -72%    -73%
+HvFHash         1135074/s     22%          10%        7%           6%    6%    5%        5%      --             -0%             -2%     -5%      -30% -66%      -70%    -71%    -72%
+HvInOutCachedId 1136364/s     22%          10%        8%           6%    6%    5%        5%      0%              --             -2%     -4%      -30% -66%      -70%    -71%    -72%
+HvFHashCachedId 1157407/s     24%          12%       10%           8%    8%    7%        7%      2%              2%              --     -3%      -29% -65%      -69%    -71%    -71%
+AvInOut         1189061/s     28%          15%       13%          11%   11%   10%       10%      5%              5%              3%      --      -27% -64%      -69%    -70%    -71%
+HvInOutXS       1626016/s     75%          57%       54%          52%   51%   51%       50%     43%             43%             40%     37%        -- -51%      -57%    -59%    -60%
+XS              3344482/s    259%         223%      217%         212%  211%  210%      208%    195%            194%            189%    181%      106%   --      -12%    -15%    -17%
+AvInOutXS       3787879/s    307%         266%      259%         253%  252%  252%      249%    234%            233%            227%    219%      133%  13%        --     -4%     -6%
+AvRefXS         3937008/s    323%         280%      273%         267%  266%  265%      263%    247%            246%            240%    231%      142%  18%        4%      --     -2%
+HvRefXS         4032258/s    333%         289%      282%         276%  275%  274%      271%    255%            255%            248%    239%      148%  21%        6%      2%      --
+
+-------| Mutator
+
+AvInOut          5 wallclock secs ( 5.78 usr +  0.02 sys =  5.80 CPU) @ 1724137.93/s (n=10000000)
+AvInOutXS        5 wallclock secs ( 4.43 usr +  0.02 sys =  4.45 CPU) @ 2247191.01/s (n=10000000)
+AvRef            7 wallclock secs ( 6.61 usr +  0.04 sys =  6.65 CPU) @ 1503759.40/s (n=10000000)
+AvRefClosure     6 wallclock secs ( 6.73 usr +  0.02 sys =  6.75 CPU) @ 1481481.48/s (n=10000000)
+AvRefEval        7 wallclock secs ( 6.82 usr +  0.03 sys =  6.85 CPU) @ 1459854.01/s (n=10000000)
+AvRefXS          3 wallclock secs ( 4.02 usr +  0.01 sys =  4.03 CPU) @ 2481389.58/s (n=10000000)
+HvFHash          9 wallclock secs ( 8.30 usr +  0.02 sys =  8.32 CPU) @ 1201923.08/s (n=10000000)
+HvFHashCachedId  8 wallclock secs ( 6.13 usr +  0.02 sys =  6.15 CPU) @ 1626016.26/s (n=10000000)
+HvInOut         10 wallclock secs ( 8.49 usr +  0.05 sys =  8.54 CPU) @ 1170960.19/s (n=10000000)
+HvInOutCachedId  8 wallclock secs ( 6.20 usr +  0.02 sys =  6.22 CPU) @ 1607717.04/s (n=10000000)
+HvInOutXS       10 wallclock secs ( 8.45 usr +  0.02 sys =  8.47 CPU) @ 1180637.54/s (n=10000000)
+HvRef            8 wallclock secs ( 6.66 usr +  0.01 sys =  6.67 CPU) @ 1499250.37/s (n=10000000)
+HvRefClosure     8 wallclock secs ( 7.16 usr +  0.00 sys =  7.16 CPU) @ 1396648.04/s (n=10000000)
+HvRefEval        7 wallclock secs ( 6.81 usr +  0.01 sys =  6.82 CPU) @ 1466275.66/s (n=10000000)
+HvRefXS          6 wallclock secs ( 4.45 usr +  0.02 sys =  4.47 CPU) @ 2237136.47/s (n=10000000)
+XS               4 wallclock secs ( 3.74 usr +  0.45 sys =  4.19 CPU) @ 2386634.84/s (n=10000000)
+
+                     Rate HvInOut HvInOutXS HvFHash HvRefClosure AvRefEval HvRefEval AvRefClosure HvRef AvRef HvInOutCachedId HvFHashCachedId AvInOut HvRefXS AvInOutXS   XS AvRefXS
+HvInOut         1170960/s      --       -1%     -3%         -16%      -20%      -20%         -21%  -22%  -22%            -27%            -28%    -32%    -48%      -48% -51%    -53%
+HvInOutXS       1180638/s      1%        --     -2%         -15%      -19%      -19%         -20%  -21%  -21%            -27%            -27%    -32%    -47%      -47% -51%    -52%
+HvFHash         1201923/s      3%        2%      --         -14%      -18%      -18%         -19%  -20%  -20%            -25%            -26%    -30%    -46%      -47% -50%    -52%
+HvRefClosure    1396648/s     19%       18%     16%           --       -4%       -5%          -6%   -7%   -7%            -13%            -14%    -19%    -38%      -38% -41%    -44%
+AvRefEval       1459854/s     25%       24%     21%           5%        --       -0%          -1%   -3%   -3%             -9%            -10%    -15%    -35%      -35% -39%    -41%
+HvRefEval       1466276/s     25%       24%     22%           5%        0%        --          -1%   -2%   -2%             -9%            -10%    -15%    -34%      -35% -39%    -41%
+AvRefClosure    1481481/s     27%       25%     23%           6%        1%        1%           --   -1%   -1%             -8%             -9%    -14%    -34%      -34% -38%    -40%
+HvRef           1499250/s     28%       27%     25%           7%        3%        2%           1%    --   -0%             -7%             -8%    -13%    -33%      -33% -37%    -40%
+AvRef           1503759/s     28%       27%     25%           8%        3%        3%           2%    0%    --             -6%             -8%    -13%    -33%      -33% -37%    -39%
+HvInOutCachedId 1607717/s     37%       36%     34%          15%       10%       10%           9%    7%    7%              --             -1%     -7%    -28%      -28% -33%    -35%
+HvFHashCachedId 1626016/s     39%       38%     35%          16%       11%       11%          10%    8%    8%              1%              --     -6%    -27%      -28% -32%    -34%
+AvInOut         1724138/s     47%       46%     43%          23%       18%       18%          16%   15%   15%              7%              6%      --    -23%      -23% -28%    -31%
+HvRefXS         2237136/s     91%       89%     86%          60%       53%       53%          51%   49%   49%             39%             38%     30%      --       -0%  -6%    -10%
+AvInOutXS       2247191/s     92%       90%     87%          61%       54%       53%          52%   50%   49%             40%             38%     30%      0%        --  -6%     -9%
+XS              2386635/s    104%      102%     99%          71%       63%       63%          61%   59%   59%             48%             47%     38%      7%        6%   --     -4%
+AvRefXS         2481390/s    112%      110%    106%          78%       70%       69%          67%   66%   65%             54%             53%     44%     11%       10%   4%      --
+
+-------| Predicate
+
+AvInOut         10 wallclock secs ( 8.61 usr +  0.03 sys =  8.64 CPU) @ 1157407.41/s (n=10000000)
+AvInOutXS        1 wallclock secs ( 1.80 usr +  0.00 sys =  1.80 CPU) @ 5555555.56/s (n=10000000)
+AvRef            9 wallclock secs ( 9.68 usr +  0.02 sys =  9.70 CPU) @ 1030927.84/s (n=10000000)
+AvRefClosure     9 wallclock secs ( 9.27 usr +  0.04 sys =  9.31 CPU) @ 1074113.86/s (n=10000000)
+AvRefEval       11 wallclock secs ( 9.78 usr +  0.03 sys =  9.81 CPU) @ 1019367.99/s (n=10000000)
+AvRefXS          2 wallclock secs ( 2.12 usr +  0.01 sys =  2.13 CPU) @ 4694835.68/s (n=10000000)
+HvFHash         10 wallclock secs ( 9.09 usr +  0.04 sys =  9.13 CPU) @ 1095290.25/s (n=10000000)
+HvFHashCachedId  9 wallclock secs ( 9.02 usr +  0.02 sys =  9.04 CPU) @ 1106194.69/s (n=10000000)
+HvInOut         11 wallclock secs (11.32 usr +  0.02 sys = 11.34 CPU) @ 881834.22/s (n=10000000)
+HvInOutCachedId  8 wallclock secs ( 9.10 usr +  0.00 sys =  9.10 CPU) @ 1098901.10/s (n=10000000)
+HvInOutXS        5 wallclock secs ( 5.42 usr +  0.02 sys =  5.44 CPU) @ 1838235.29/s (n=10000000)
+HvRef           11 wallclock secs ( 9.72 usr +  0.02 sys =  9.74 CPU) @ 1026694.05/s (n=10000000)
+HvRefClosure    11 wallclock secs ( 9.71 usr + -0.01 sys =  9.70 CPU) @ 1030927.84/s (n=10000000)
+HvRefEval       11 wallclock secs ( 9.58 usr +  0.00 sys =  9.58 CPU) @ 1043841.34/s (n=10000000)
+HvRefXS          3 wallclock secs ( 1.95 usr +  0.00 sys =  1.95 CPU) @ 5128205.13/s (n=10000000)
+XS               1 wallclock secs ( 1.71 usr +  0.00 sys =  1.71 CPU) @ 5847953.22/s (n=10000000)
+
+                     Rate HvInOut AvRefEval HvRef HvRefClosure AvRef HvRefEval AvRefClosure HvFHash HvInOutCachedId HvFHashCachedId AvInOut HvInOutXS AvRefXS HvRefXS AvInOutXS   XS
+HvInOut          881834/s      --      -13%  -14%         -14%  -14%      -16%         -18%    -19%            -20%            -20%    -24%      -52%    -81%    -83%      -84% -85%
+AvRefEval       1019368/s     16%        --   -1%          -1%   -1%       -2%          -5%     -7%             -7%             -8%    -12%      -45%    -78%    -80%      -82% -83%
+HvRef           1026694/s     16%        1%    --          -0%   -0%       -2%          -4%     -6%             -7%             -7%    -11%      -44%    -78%    -80%      -82% -82%
+HvRefClosure    1030928/s     17%        1%    0%           --   -0%       -1%          -4%     -6%             -6%             -7%    -11%      -44%    -78%    -80%      -81% -82%
+AvRef           1030928/s     17%        1%    0%           0%    --       -1%          -4%     -6%             -6%             -7%    -11%      -44%    -78%    -80%      -81% -82%
+HvRefEval       1043841/s     18%        2%    2%           1%    1%        --          -3%     -5%             -5%             -6%    -10%      -43%    -78%    -80%      -81% -82%
+AvRefClosure    1074114/s     22%        5%    5%           4%    4%        3%           --     -2%             -2%             -3%     -7%      -42%    -77%    -79%      -81% -82%
+HvFHash         1095290/s     24%        7%    7%           6%    6%        5%           2%      --             -0%             -1%     -5%      -40%    -77%    -79%      -80% -81%
+HvInOutCachedId 1098901/s     25%        8%    7%           7%    7%        5%           2%      0%              --             -1%     -5%      -40%    -77%    -79%      -80% -81%
+HvFHashCachedId 1106195/s     25%        9%    8%           7%    7%        6%           3%      1%              1%              --     -4%      -40%    -76%    -78%      -80% -81%
+AvInOut         1157407/s     31%       14%   13%          12%   12%       11%           8%      6%              5%              5%      --      -37%    -75%    -77%      -79% -80%
+HvInOutXS       1838235/s    108%       80%   79%          78%   78%       76%          71%     68%             67%             66%     59%        --    -61%    -64%      -67% -69%
+AvRefXS         4694836/s    432%      361%  357%         355%  355%      350%         337%    329%            327%            324%    306%      155%      --     -8%      -15% -20%
+HvRefXS         5128205/s    482%      403%  399%         397%  397%      391%         377%    368%            367%            364%    343%      179%      9%      --       -8% -12%
+AvInOutXS       5555556/s    530%      445%  441%         439%  439%      432%         417%    407%            406%            402%    380%      202%     18%      8%        --  -5%
+XS              5847953/s    563%      474%  470%         467%  467%      460%         444%    434%            432%            429%    405%      218%     25%     14%        5%   --
